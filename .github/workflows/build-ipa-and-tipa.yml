@@ -1,0 +1,40 @@
+name: Build IPA and TIPA
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '8'
+      - name: Install build tools
+        run: |
+          brew update
+          brew install cmake ldid wget make coreutils
+      - name: Build IPA
+        run: |
+          export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
+          gmake all PLATFORM=2 RELEASE=1 SLIMMED=1
+      - name: Build TIPA
+        run: |
+          export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
+          gmake package PLATFORM=2 RELEASE=1 SLIMMED=1 TROLLSTORE_JIT_ENT=1
+      - run: ls -lah artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PojavLauncher-ipa
+          path: artifacts/net.kdt.pojavlauncher*-ios.ipa
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PojavLauncher-tipa
+          path: artifacts/net.kdt.pojavlauncher*-ios-trollstore.tipa
+          if-no-files-found: warn
