@@ -1,4 +1,4 @@
-name: Build IPA and TIPA
+name: Build Shadow Client iOS IPA
 
 on:
   workflow_dispatch:
@@ -30,11 +30,11 @@ jobs:
       - run: ls -lah artifacts
       - uses: actions/upload-artifact@v4
         with:
-          name: PojavLauncher-ipa
+          name: ShadowClient-ipa
           path: artifacts/net.kdt.pojavlauncher*-ios.ipa
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         with:
-          name: PojavLauncher-tipa
+          name: ShadowClient-tipa
           path: artifacts/net.kdt.pojavlauncher*-ios-trollstore.tipa
           if-no-files-found: warn
