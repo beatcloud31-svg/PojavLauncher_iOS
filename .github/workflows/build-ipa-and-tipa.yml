@@ -22,11 +22,11 @@ jobs:
       - name: Build IPA
         run: |
           export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
-          gmake all PLATFORM=2 RELEASE=1 SLIMMED=1
+          gmake all BOOTJDK="$JAVA_HOME/bin" PLATFORM=2 RELEASE=1 SLIMMED=1
       - name: Build TIPA
         run: |
           export PATH="$(brew --prefix)/opt/make/libexec/gnubin:$PATH"
-          gmake package PLATFORM=2 RELEASE=1 SLIMMED=1 TROLLSTORE_JIT_ENT=1
+          gmake package BOOTJDK="$JAVA_HOME/bin" PLATFORM=2 RELEASE=1 SLIMMED=1 TROLLSTORE_JIT_ENT=1
       - run: ls -lah artifacts
       - uses: actions/upload-artifact@v4
         with:
